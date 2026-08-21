@@ -1,61 +1,38 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPO="https://raw.githubusercontent.com/ClassicDarkPack/backhaul-premium/main"
+
 INSTALL_DIR="/root/backhaul-core"
-SCRIPT_PATH="/root/backhaul.sh"
+BACKHAUL_BIN="$INSTALL_DIR/backhaul_premium"
+BACKHAUL_SCRIPT="/root/backhaul.sh"
 
-# GitHub Raw repository URL
-REPO_RAW_BASE="${REPO_RAW_BASE:-https://raw.githubusercontent.com/ClassicDarkPack/backhaul-premium/main}"
-
-# Check for curl
-if ! command -v curl >/dev/null 2>&1; then
-    echo "[!] curl is required."
-    echo "[+] Install it with:"
-    echo "    apt-get update && apt-get install -y curl"
-    exit 1
-fi
-
-# Create installation directory
-mkdir -p "$INSTALL_DIR"
-
-echo "[+] Using repository:"
-echo "    $REPO_RAW_BASE"
+echo "[+] Installing Backhaul Premium..."
 echo
 
-# Download Backhaul Premium binary
+mkdir -p "$INSTALL_DIR"
+
 echo "[+] Downloading backhaul_premium..."
 
-if ! curl -fL --retry 3 --retry-delay 1 \
-    "$REPO_RAW_BASE/backhaul-core/backhaul_premium" \
-    -o "$INSTALL_DIR/backhaul_premium"; then
+curl -fL --retry 3 --retry-delay 1 \
+    "$REPO/backhaul-core/backhaul_premium" \
+    -o "$BACKHAUL_BIN"
 
-    echo "[!] Failed to download backhaul_premium."
-    echo "[!] Check that the file exists in:"
-    echo "    backhaul-core/backhaul_premium"
-    exit 1
-fi
-
-chmod +x "$INSTALL_DIR/backhaul_premium"
-
-# Download management script
 echo "[+] Downloading backhaul.sh..."
 
-if ! curl -fL --retry 3 --retry-delay 1 \
-    "$REPO_RAW_BASE/backhaul.sh" \
-    -o "$SCRIPT_PATH"; then
+curl -fL --retry 3 --retry-delay 1 \
+    "$REPO/backhaul.sh" \
+    -o "$BACKHAUL_SCRIPT"
 
-    echo "[!] Failed to download backhaul.sh."
-    echo "[!] Check that the file exists in the repository."
-    exit 1
-fi
+echo "[+] Setting executable permissions..."
 
-chmod +x "$SCRIPT_PATH"
+chmod +x /root/backhaul.sh /root/backhaul-core/backhaul_premium
 
 echo
 echo "[+] Installation completed successfully!"
 echo
 echo "[+] Installed files:"
-ls -lh "$INSTALL_DIR/backhaul_premium" "$SCRIPT_PATH"
+ls -lh /root/backhaul.sh /root/backhaul-core/backhaul_premium
 
 echo
 echo "[+] Run Backhaul Premium with:"
