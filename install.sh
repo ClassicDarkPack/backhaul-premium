@@ -1,4 +1,3 @@
-```bash
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -63,4 +62,3 @@ echo "[+] Run Backhaul Premium with:"
 echo
 echo "    bash /root/backhaul.sh"
 echo
-```
